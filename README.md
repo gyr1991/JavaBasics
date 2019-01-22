@@ -1,2 +1,2 @@
 # JavaBasics
-Java基这里记录一些Java基础知识
+这里记录一些Java基础知识
