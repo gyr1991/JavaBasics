@@ -21,3 +21,14 @@ GC时为什么会有全局停顿？
 危害
 长时间服务停止，没有响应;
 遇到HA系统，可能引起主备切换，严重危害生产环境。
+
+4.Java.lang.NoSuchFieldError错误可能在什么阶段抛出呢？ 
+类加载过程在链接的验证阶段的符号引用验证时会抛出这个异常，或者NoSuchMethodError等异常。
+
+5.ClassLoader的默认设计种类？
+BootStrap ClassLoader（启动ClassLoader）
+Extension ClassLoader（扩展ClassLoader）
+App ClassLoader（应用/系统ClassLoader）
+Custom ClassLoader（自定义ClassLoader）
+从下往上的ClassLoader呈子父关系（是上下级关系，并不是继承的超类关系）。
+自底向上检查类是否已经加载，自顶向下尝试加载类。
