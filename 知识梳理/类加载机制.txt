@@ -40,26 +40,28 @@ ClassLoader的实例将读入Java字节码将类装载到JVM中
 ClassLoader负责类装载过程中的加载阶段
 
 类装载器层级？
-BootStrap ClassLoader （启动ClassLoader）
-Extension ClassLoader （扩展ClassLoader）
-App ClassLoader （应用ClassLoader/系统ClassLoader）
-Custom ClassLoader(自定义ClassLoader)
+BootStrap ClassLoader （启动ClassLoader）                     rt.jar /-Xbootclasspath
+Extension ClassLoader （扩展ClassLoader）                      %JAVA_HOME%/lib/ext/*.jar
+App ClassLoader （应用ClassLoader/系统ClassLoader）    Classpath下
+Custom ClassLoader(自定义ClassLoader)                            完全自定义的路径
 自底向上检查类是否已经加载，自顶向下尝试加载类
 
 双亲委派机制的工作流程：
+1.首先，检查一下指定名称的类是否已经加载过，如果加载过了，就不需要再加载，直接返回。
+每个类加载器都有自己的加载缓存，当一个类被加载了以后就会放入缓存，等下次加载的时候就可以直接返回了。
+2.如果此类没有加载过，那么，再判断一下是否有父加载器；如果有父加载器，则由父加载器加载，
+即调用parent.loadClass(name, false)；如果到了最顶层，没有父类了，就调用bootstrap类加载器来加载。
+3.如果父加载器及bootstrap类加载器都没有找到指定的类，那么调用当前类加载器的findClass方法来完成类加载。
+注意：换句话说，如果自定义类加载器，就必须重写findClass方法。
+
+双亲委托的意义？
+1.每一个类都只会被加载一次，避免了重复加载
+
+2.每一个类都会被尽可能的加载（从引导类加载器往下，每个加载器都可能会根据优先次序尝试加载它）
+
+3.有效避免了某些恶意类的加载（比如自定义了Java.lang.Object类，一般而言在双亲委派模型下会加载系统的Object类而不是自定义的Object类）
 
 
-1. 当前ClassLoader首先从自己已经加载的类中查询是否此类已经加载，如果已经加载则直接返回原来已经加载的类。
-
-每个类加载器都有自己的加载缓存，
-当一个类被加载了以后就会放入缓存，等下次加载的时候就可以直接返回了。
-
-
-2. ?当前classLoader的缓存中没有找到被加载的类的时候，委托父类加载器去加载，父类加载器采用同样的策略，首先查看自己的缓存，
-然后委托父类的父类去加载，一直到bootstrp ClassLoader.
-
-
-3. ?当所有的父类加载器都没有加载的时候，再由当前的类加载器加载，并将其放入它自己的缓存中，以便下次有加载请求的时候直接返回。
 
 双亲模式的破坏
     双亲模式是默认的模式，但不是必须这么做
