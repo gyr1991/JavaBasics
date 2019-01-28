@@ -21,7 +21,7 @@ await(),countDown()方法
 CyclicBarrier循环栅栏？
 cyclic构造方法里传数字N和runnable，runnable在每次数字满N时调用一次；（runnable可以为null，表示没有动作，只实行计N操作）
 生成真正的任务把cyclic对象传入，在run方法里cyclic.await()，等N个任务都await时，调用一次cyclic里的run方法，再进行await后的任务；
-每次await计时满后重新开始计N的次数，每满一次N都调用一次cyclic的run。
+每次await计次数满后重新开始计N的次数，每满一次N都调用一次cyclic的run。
 
 LockSupport？  
 LockSupport.park(),LockSupport.unpark(t1)
