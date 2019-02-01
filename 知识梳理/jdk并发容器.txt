@@ -1,0 +1,22 @@
+Map，List，Set都是线程不安全的，通过Collections.synchronizedMap转化为线程安全的（List，Set同理）
+通过SynchronizedMap包装原有map，在包装类中所有方法包括get、set都加了synchronized锁。
+所以性能不强，并发性不高。
+ConcurrentHashMap：应用层实现，通过无锁CAS、自旋锁等操作实现。并发性高。
+
+BlockingQueue(接口)?ArrayBlockingQueue、LinkedBlockingQueue。线程安全，但并发性不高。
+ConcurrentLinkedQueue：类似于ConcurrentHashMap。并发性高。
+
+ConcurrentHashMap在jdk1.8中的改进：
+1.取消segments字段，直接采用transient volatile HashEntry<K,V>[] table保存数据，采用table数组元素作为锁，
+从而实现了对每一行数据进行加锁，进一步减少并发冲突的概率。
+2.将原先table数组＋单向链表的数据结构，变更为table数组＋单向链表＋红黑树的结构。对于hash表来说，
+最核心的能力在于将key hash之后能均匀的分布在数组中。如果hash之后散列的很均匀，那么table数组中的每个
+队列长度主要为0或者1。但实际情况并非总是如此理想，虽然ConcurrentHashMap类默认的加载因子为0.75，
+但是在数据量过大或者运气不佳的情况下，还是会存在一些队列长度过长的情况，如果还是采用单向列表方式，
+那么查询某个节点的时间复杂度为O(n)；因此，对于个数超过8(默认值)的列表，jdk1.8中采用了红黑树的结构，
+那么查询的时间复杂度可以降低到O(logN)，可以改进性能。
+
+ThreadLocal?
+ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，
+为每一个线程维护一个独立的变量副本。通过ThreadLocal可以将对象的可见范围限制在同一个线程内。
+一般结合线程池使用，判断get方法为null就set一个局部变量进去，之后通过get方法直接取得当前线程绑定的值。

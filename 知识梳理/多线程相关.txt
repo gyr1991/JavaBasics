@@ -17,3 +17,37 @@ final(一旦初始化完成，其他线程就可见)
 CAS？
 AtomicInteger？AtomicReference？AtomicStampedReference？AtomicIntegerArray？AtomicReferenceArray？
 AtomicIntegerFieldUpdater? 让普通变量也享受原子操作，AtomicIntegerFieldUpdater.new Updater(*.class,"field")反射？？
+
+锁优化的思路和方法？
+减少锁持有时间，减小锁粒度，锁分离，锁粗化，锁消除。
+
+虚拟机内的锁优化？
+偏向锁，轻量级锁，自旋锁。
+总结：
+1.不是Java语言层面的锁优化方法
+2.内置于JVM中的获取锁的优化方法和获取锁的步骤
+a.偏向锁可用会先尝试偏向锁
+b.轻量级锁可用会先尝试轻量级锁
+c.以上都失败，尝试自旋锁
+d.再失败，尝试普通锁，使用OS互斥量在操作系统层挂起
+
+jdk8新支持：
+
+LongAdder：
+1.和AtomicInteger类似的使用方式(LongAdder是long型)
+2.在AtomicInteger上进行了热点分离，减少冲突加大CAS操作的成功率，性能更加提高(线程少的时候)
+
+CompletableFuture:
+1.实现CompletionStage接口(40余个方法)
+2.Java8中对Future的增强版
+3.支持流式调用
+
+StampedLock:
+读写锁的改进，读不阻塞写(如果读的时候发生了写，那就发生重读)
+实现思想：
+1.CLH自旋锁
+2.锁维护一个等待线程队列，所有申请锁，但是没有成功的线程都记录在这个队列中。每一个节点(一个节点代表一个线程)，
+保存一个标记为(locked)，用于判断当前线程是否已经释放锁。
+3.当一个线程试图获得锁时，取得当前等待队列的尾部节点作为其前序节点。并使用类似如下代码判断前序节点是否已经
+成功释放锁：  while(pred.locked){}
+4.不会进行无休止的自旋，会在若干次自旋后挂起线程。

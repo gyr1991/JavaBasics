@@ -28,3 +28,18 @@ LockSupport.park(),LockSupport.unpark(t1)
 和suspend(线程挂起)、resume有点像，但是不容易引起线程冻结。(suspend不建议使用)
 而且就算unpark发生在park之前，线程也不会永久被挂起。
 park能够响应中断但不抛出异常，中断响应的结果是park()函数的返回。可以从Thread.interrupted()得到中断标志。
+
+CountDownLatch与CyclicBarrier比较？
+CountDownLatch是一个同步的辅助类，允许一个或多个线程，等待其他一组线程完成操作，再继续执行。
+
+CyclicBarrier是一个同步的辅助类，允许一组线程相互之间等待，达到一个共同点，再继续执行。
+区别:
+
+
+CountDownLatch的计数器只能使用一次。而CyclicBarrier的计数器可以使用reset() 方法重置。
+所以CyclicBarrier能处理更为复杂的业务场景，比如如果计算发生错误，可以重置计数器，
+并让线程们重新执行一次
+CyclicBarrier还提供getNumberWaiting(可以获得CyclicBarrier阻塞的线程数量)、
+isBroken(用来知道阻塞的线程是否被中断)等方法。
+
+CountDownLatch会阻塞主线程，CyclicBarrier不会阻塞主线程，只会阻塞子线程。
