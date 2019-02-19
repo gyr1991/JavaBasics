@@ -1,0 +1,8 @@
+观察者模式：对象之间多对一依赖的一种设计方案，被依赖的对象为Subject，依赖的对象为Observer，Subject通知Observer变化。
+
+Java内置的观察者：Observable，Observer
+注意点：
+1.Observable是类而不是接口。
+2.要调用Observable的setChanged方法后才能通知。
+3.对Observer，先注册反而后通知，因为Observable源码实现里面是倒序遍历。
+4.类不能实现多重继承，实际运用过程中应当看情况而定是否使用Observable。

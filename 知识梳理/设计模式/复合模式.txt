@@ -1,0 +1,10 @@
+模式常一起使用，组合在一个设计解决方案中
+复合模式在一个解决方案中结合两个或多个模式
+能解决一般性或一系列的问题
+某些模式结合使用，并不就是复合模式
+
+MVC理解：
+Model：是程序主体
+View：用户界面
+Controller：适配View与ModelView与Controller是策略模式关系，Controller提供策略
+Model与View是观察者模式
