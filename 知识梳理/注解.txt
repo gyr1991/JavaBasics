@@ -14,7 +14,7 @@ Java注解分类？
 @Deprecated，使用了注解为它的元素编译器将发出警告，因为注解@Deprecated是不赞成使用的代码，被弃用的代码。
 @SuppressWarnings，关闭不当编译器警告信息。
 
-创建注解时的常用4种注解？
+创建注解时的常用4种注解(元注解)？
 1.@Target
 表示该注解可以用于什么地方，可能的ElementType参数有：
 CONSTRUCTOR：构造器的声明

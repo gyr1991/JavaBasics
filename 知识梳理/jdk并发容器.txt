@@ -19,4 +19,4 @@ ConcurrentHashMap在jdk1.8中的改进：
 ThreadLocal?
 ThreadLocal一般称为线程本地变量，它是一种特殊的线程绑定机制，将变量与线程绑定在一起，
 为每一个线程维护一个独立的变量副本。通过ThreadLocal可以将对象的可见范围限制在同一个线程内。
-一般结合线程池使用，判断get方法为null就set一个局部变量进去，之后通过get方法直接取得当前线程绑定的值。
+一般结合线程池使用，get方法直接取得当前线程的副本，不为null则直接用，为null就set一个局部变量进去再get。

@@ -40,7 +40,7 @@ LongAdder：
 CompletableFuture:
 1.实现CompletionStage接口(40余个方法)
 2.Java8中对Future的增强版
-3.支持流式调用
+3.支持流式调用(一般结合函数式编程)
 
 StampedLock:
 读写锁的改进，读不阻塞写(如果读的时候发生了写，那就发生重读)
